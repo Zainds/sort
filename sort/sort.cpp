@@ -1,0 +1,124 @@
+﻿
+
+#include <iostream>
+#include <vector>
+#include<chrono>
+using namespace std;
+
+
+void print_Arr(int* arr, int size){
+
+    for (int i = 0; i < size; i++)
+        cout << arr[i]<<endl;
+}
+
+void quickSort(int* arr, int low, int high)
+{
+    int i = low;
+    int j = high;
+    int pivot = arr[(i + j) / 2];
+    int temp;
+
+    while (i <= j)
+    {
+        while (arr[i] < pivot)
+            i++;
+        while (arr[j] > pivot)
+            j--;
+        if (i <= j)
+        {
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    if (j > low)
+        quickSort(arr, low, j);
+    if (i < high)
+        quickSort(arr, i, high);
+}
+
+void select_sort(int* arr, int size) {
+    
+    for (int i = 0; i < size - 1; i++){
+        int min_index = i;
+        for (int j = i + 1; j < size; j++){
+            if (arr[j] < arr[min_index]){
+                min_index = j;
+            }
+        }
+        if (min_index != i){
+            swap(arr[i], arr[min_index]);
+        } 
+    }
+}
+int GetRandomNumber(int min, int max){
+
+    int num = min + rand() % (max - min + 1);
+
+    return num;
+}
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    cout << "Введите размерность массива\n";
+    int n;
+    int k = 0;
+    cin >> n;
+    int* arr = new int[n];
+    int arrChoice, arrUnique;
+    
+    cout << "Включить проверку на уникальность элементов массива?:  1 - Да,  2 - Нет\n";
+    cin >> arrUnique;
+
+    for (int i = 0; i < n; i++) {
+        int x = GetRandomNumber(1, 120);
+
+        if (arrUnique == 1) {
+            int flag = 1;
+            for (int j = 0; j < n; j++) {
+                if (arr[j] == x) flag = 0;
+            }
+        
+            if (flag == 1) {
+                arr[i] = x;
+                 k++;
+            }
+            else {
+                i -= 1;
+            }
+
+        }
+        else {
+            arr[i] = x;
+        }
+        
+    }
+
+    //print_Arr(arr, n);
+    cout << "Выберите метод сортировки:  1 - Сортировка пузыркьком,  2 - QuickSort" << endl;
+    cin >> arrChoice;
+    auto start_time = std::chrono::steady_clock::now();
+    if (arrChoice == 1){
+        
+        select_sort(arr, n);
+    }
+    else
+    {
+        
+        quickSort(arr, 0, n);
+    }
+
+    auto end_time = std::chrono::steady_clock::now();
+    auto elapsed_ns = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
+    std::cout << elapsed_ns.count() << " ns\n";
+    
+   // print_Arr(arr, n);
+}
+
+
