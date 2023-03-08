@@ -1,19 +1,13 @@
-﻿
-
-#include <iostream>
-#include <vector>
-#include<chrono>
+﻿#include <iostream>
+#include <chrono>
 using namespace std;
 
-
 void print_Arr(int* arr, int size){
-
     for (int i = 0; i < size; i++)
         cout << arr[i]<<endl;
 }
 
-void quickSort(int* arr, int low, int high)
-{
+void quickSort(int* arr, int low, int high){
     int i = low;
     int j = high;
     int pivot = arr[(i + j) / 2];
@@ -27,9 +21,8 @@ void quickSort(int* arr, int low, int high)
             j--;
         if (i <= j)
         {
-            temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
+           
+            swap(arr[i], arr[j]);
             i++;
             j--;
         }
@@ -55,13 +48,9 @@ void select_sort(int* arr, int size) {
     }
 }
 int GetRandomNumber(int min, int max){
-
     int num = min + rand() % (max - min + 1);
-
     return num;
 }
-
-
 
 int main()
 {
@@ -72,6 +61,7 @@ int main()
     cin >> n;
     int* arr = new int[n];
     int arrChoice, arrUnique;
+
     
     cout << "Включить проверку на уникальность элементов массива?:  1 - Да,  2 - Нет\n";
     cin >> arrUnique;
@@ -82,7 +72,7 @@ int main()
         if (arrUnique == 1) {
             int flag = 1;
             for (int j = 0; j < n; j++) {
-                if (arr[j] == x) flag = 0;
+                if (arr[j] == x && j != i) flag = 0;
             }
         
             if (flag == 1) {
@@ -92,33 +82,28 @@ int main()
             else {
                 i -= 1;
             }
-
         }
         else {
             arr[i] = x;
         }
-        
     }
 
-    //print_Arr(arr, n);
-    cout << "Выберите метод сортировки:  1 - Сортировка пузыркьком,  2 - QuickSort" << endl;
+    cout << "Выберите метод сортировки:  1 - Сортировка выбором,  2 - QuickSort" << endl;
     cin >> arrChoice;
     auto start_time = std::chrono::steady_clock::now();
     if (arrChoice == 1){
-        
         select_sort(arr, n);
     }
     else
     {
-        
         quickSort(arr, 0, n);
     }
 
     auto end_time = std::chrono::steady_clock::now();
-    auto elapsed_ns = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
-    std::cout << elapsed_ns.count() << " ns\n";
+    auto elapsed_ns = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time);
+    std::cout << elapsed_ns.count() << " ns\n \n";
     
-   // print_Arr(arr, n);
+    print_Arr(arr, n);
 }
 
 
