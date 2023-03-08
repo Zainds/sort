@@ -19,9 +19,7 @@ void quickSort(int* arr, int low, int high){
             i++;
         while (arr[j] > pivot)
             j--;
-        if (i <= j)
-        {
-           
+        if (i <= j){
             swap(arr[i], arr[j]);
             i++;
             j--;
@@ -62,7 +60,6 @@ int main()
     int* arr = new int[n];
     int arrChoice, arrUnique;
 
-    
     cout << "Включить проверку на уникальность элементов массива?:  1 - Да,  2 - Нет\n";
     cin >> arrUnique;
 
