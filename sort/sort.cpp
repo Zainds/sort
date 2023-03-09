@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <chrono>
+#include <fstream>
 using namespace std;
 
 void print_Arr(int* arr, int size){
@@ -11,7 +12,6 @@ void quickSort(int* arr, int low, int high){
     int i = low;
     int j = high;
     int pivot = arr[(i + j) / 2];
-    int temp;
 
     while (i <= j)
     {
@@ -54,19 +54,25 @@ int main()
 {
     setlocale(LC_ALL, "");
     cout << "Введите размерность массива\n";
-    int n;
+    int n, arrChoice, arrUnique;
     int k = 0;
     cin >> n;
     int* arr = new int[n];
-    int arrChoice, arrUnique;
+
+    ofstream fout;
+    fout.open("output.dat");
 
     cout << "Включить проверку на уникальность элементов массива?:  1 - Да,  2 - Нет\n";
     cin >> arrUnique;
 
+    if (arrUnique == 1 && n > 120) {
+        cout << "Введенный размер массива больше, чем максимально возможное кол-во уникальных элементов(120) \n";
+    }
     for (int i = 0; i < n; i++) {
         int x = GetRandomNumber(1, 120);
 
         if (arrUnique == 1) {
+            
             int flag = 1;
             for (int j = 0; j < n; j++) {
                 if (arr[j] == x && j != i) flag = 0;
@@ -87,7 +93,7 @@ int main()
 
     cout << "Выберите метод сортировки:  1 - Сортировка выбором,  2 - QuickSort" << endl;
     cin >> arrChoice;
-    auto start_time = std::chrono::steady_clock::now();
+    auto start_time = chrono::steady_clock::now();
     if (arrChoice == 1){
         select_sort(arr, n);
     }
@@ -96,11 +102,15 @@ int main()
         quickSort(arr, 0, n);
     }
 
-    auto end_time = std::chrono::steady_clock::now();
+    auto end_time = chrono::steady_clock::now();
     auto elapsed_ns = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time);
-    std::cout << elapsed_ns.count() << " ns\n \n";
+    cout << elapsed_ns.count() << " ns\n \n";
     
-    print_Arr(arr, n);
+    for (int i = 0; i < n; i++) {
+        fout << arr[i] << endl;
+    }
+    fout.close();
+    //print_Arr(arr, n);
 }
 
 
